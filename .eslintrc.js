@@ -19,7 +19,6 @@ module.exports = {
   },
   plugins: ['react'],
   rules: {
-    'linebreak-style': ['error', 'unix'],
     'no-unused-vars': 2,
     'object-curly-spacing': ['error', 'never'],
     semi: ['error', 'always'],
