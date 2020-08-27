@@ -5,7 +5,6 @@ import {shouldUpdate} from '../../../component-updater';
 import Dot from '../../dot';
 import styleConstructor from './style';
 
-
 class Day extends Component {
   static displayName = 'IGNORE';
 
@@ -18,7 +17,7 @@ class Day extends Component {
     onPress: PropTypes.func,
     onLongPress: PropTypes.func,
     date: PropTypes.object,
-    disableAllTouchEventsForDisabledDays: PropTypes.bool
+    disableAllTouchEventsForDisabledDays: PropTypes.bool,
   };
 
   constructor(props) {
@@ -29,8 +28,8 @@ class Day extends Component {
     this.onDayLongPress = this.onDayLongPress.bind(this);
   }
 
-  onDayPress() {
-    this.props.onPress(this.props.date);
+  onDayPress(event) {
+    this.props.onPress(this.props.date, event);
   }
   onDayLongPress() {
     this.props.onLongPress(this.props.date);
@@ -48,22 +47,14 @@ class Day extends Component {
     let marking = this.props.marking || {};
     if (marking && marking.constructor === Array && marking.length) {
       marking = {
-        marking: true
+        marking: true,
       };
     }
 
     const isDisabled = typeof marking.disabled !== 'undefined' ? marking.disabled : this.props.state === 'disabled';
     const isToday = this.props.state === 'today';
 
-    const {
-      marked,
-      dotColor,
-      selected,
-      selectedColor,
-      selectedTextColor,
-      activeOpacity,
-      disableTouchEvent
-    } = marking;
+    const {marked, dotColor, selected, selectedColor, selectedTextColor, activeOpacity, disableTouchEvent} = marking;
 
     if (selected) {
       containerStyle.push(this.style.selected);
@@ -76,7 +67,6 @@ class Day extends Component {
       if (selectedTextColor) {
         textStyle.push({color: selectedTextColor});
       }
-
     } else if (isDisabled) {
       textStyle.push(this.style.disabledText);
     } else if (isToday) {
@@ -102,7 +92,9 @@ class Day extends Component {
         accessibilityRole={isDisabled ? undefined : 'button'}
         accessibilityLabel={this.props.accessibilityLabel}
       >
-        <Text allowFontScaling={false} style={textStyle}>{String(this.props.children)}</Text>
+        <Text allowFontScaling={false} style={textStyle}>
+          {String(this.props.children)}
+        </Text>
         <Dot
           theme={theme}
           isMarked={marked}
